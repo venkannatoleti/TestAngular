@@ -1,0 +1,51 @@
+<div>
+  <select name="" id="" [(ngModel)]="pageLength" (change)='fncChange()' style="width: 100px; align-items: right ;" *ngIf='type == "table"' >
+    <option value="{{item}}" *ngFor='let item of DataCount' [attr.selected]='item === pageLength'>{{item}}</option>
+  </select>
+ <button *ngIf='type == "table"' (click) ="DeleteAll()" > Delete All</button>
+</div>
+<br>
+<table *ngIf='type == "table"'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>name</th>
+      <th>phone</th>
+      <th>add</th>
+      <th>action</th>
+      <input type="checkbox" [(ngModel)]="AllSelected"  (change)="checkUncheckAll()"/> <strong>Select/ Unselect All</strong>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let item of TempStudents'>
+      <td>{{item.Id}}</td>
+      <td>{{item.Name}}</td>
+      <td>{{item.phone}}</td>
+      <td>{{( item.add ? item.add : 'No Address Found') | mixedCase:' myAddedTxt' }}</td>
+      <td><button (click)='AddEdit("edit", item)' appBlueButton >edit</button></td>
+      <td><input type="checkbox" [(ngModel)]="item.isCheck"  value="{{item.isCheck}}" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<div *ngIf='type == "table"'>
+  <!-- {{NoofPages}} -->
+  <ul >
+    <a class="horizontal" *ngFor='let item of counter(NoofPages); let i= index' (click)='fncChange(i + 1)'>{{i + 1 + '  '}}</a>
+  </ul>
+</div>
+<!-- this is child component -->
+<!-- transform data parent to child component -->
+<app-test *ngIf='type == "table"' [title]='Name' anotherData='static data'></app-test>
+<form action="" *ngIf='type == "edit"'>
+  <input type="hidden" [(ngModel)]='StudentDetails.Id' name="Id">
+  <label>Name</label>
+  <input type="text" [(ngModel)]='StudentDetails.Name' name="Name">
+  <label for="phone">phone</label>
+  <input type="text" name='phone' [(ngModel)]='StudentDetails.phone'>
+  <label for="add">add</label>
+  <input type="text" name='add' [(ngModel)]='StudentDetails.add'>
+
+  <input type="button" value="update" (click)='update()'>
+</form>
